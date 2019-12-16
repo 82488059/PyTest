@@ -1,5 +1,5 @@
-import HTMLParser
-import urllib
+import html.parser
+import urllib.request, urllib.parse, urllib.error
 import sys
 import time
 url = "http://3.showweixin.sinaapp.com/Home/SendMesg"
@@ -20,7 +20,7 @@ data = time.strftime("%d/%m/%Y")
 
 
 def run():
-    for i in xrange(0, 24*60*20):
+    for i in range(0, 24*60*20):
         td = time.strftime("%d/%m/%Y")
         if td != data:
             return
@@ -30,7 +30,7 @@ def run():
             return
 
         time.sleep(3)
-        from urllib import urlopen
+        from urllib.request import urlopen
         urlopen("http://3.showweixin.sinaapp.com/Home/SendMesg").read()
 
     return
