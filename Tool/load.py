@@ -11,16 +11,16 @@ sn = 'sn'
 try:
     db = connect('Provider=SQLOLEDB.1;Data Source=%s;Initial Catalog=%s;\
                         User ID=%s;Password=%s;'%(server, database, user, password))
-except Exception, e:
-    print e
+except Exception as e:
+    print(e)
 else:
     cur = db.cursor()
     msg = cur.callproc(sp, ()) 
     if len(msg) > 1:
         if msg[-1] is None:
-            print 'sn is ok. Can be test at this station'
+            print('sn is ok. Can be test at this station')
         else:
-            print msg[-1]
+            print(msg[-1])
 finally:
     try: db.close()
     except: pass
