@@ -17,7 +17,7 @@ def run():
     screen = pygame.display.set_mode((640, 480))
     stars = []
 
-    for n in xrange(200):
+    for n in range(200):
         xx = float(randint(-10, 10))
         yy = float(randint(-10, 10))
         x = 320 + xx
@@ -60,7 +60,7 @@ def run():
         def on_screen(star):
             return 480 > star.y > 0 and 0 < star.x < 640
 
-        stars = filter(on_screen, stars)
+        stars = list(filter(on_screen, stars))
         pygame.display.update()
 
 

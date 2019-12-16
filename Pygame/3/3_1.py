@@ -18,7 +18,7 @@ while True:
         exit()
     if VIDEORESIZE == event.type:
         SCREENSIZE=event.size
-        print SCREENSIZE
+        print(SCREENSIZE)
         screen = pygame.display.set_mode(SCREENSIZE, RESIZABLE, 32)
         pygame.display.set_caption("window resize to "+str(event.size))
 

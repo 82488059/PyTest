@@ -9,7 +9,7 @@ screen = pygame.display.set_mode((640, 480), 0, 32)
 
 font = pygame.font.Font('../DejaVuSansMono.ttf', 40)
 
-text = font.render(u"hello", True, (0, 0, 255))
+text = font.render("hello", True, (0, 0, 255))
 
 x = 0
 y = (480-text.get_height())/2

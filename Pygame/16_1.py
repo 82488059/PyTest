@@ -67,17 +67,17 @@ class World(object):
 
     def process(self, time_passed):
         time_passed_seconds = time_passed / 1000.0
-        for entity in self.entities.values():
+        for entity in list(self.entities.values()):
             entity.process(time_passed_seconds)
 
     def render(self, surface):
         surface.blit(self.background, (0, 0))
-        for entity in self.entities.itervalues():
+        for entity in self.entities.values():
             entity.render(surface)
 
     def get_close_entity(self, name, location, range=100.):
         location = Vector2(*location)
-        for entity in self.entities.itervalues():
+        for entity in self.entities.values():
             if entity.name == name:
                 distance = location.get_distance_to(entity.location)
                 if distance < range:
@@ -289,7 +289,7 @@ def run():
     leaf_image = pygame.image.load("leaf.png").convert_alpha()
     spider_image = pygame.image.load("spider.png").convert_alpha()
 
-    for ant_no in xrange(ANT_COUNT):
+    for ant_no in range(ANT_COUNT):
         ant = Ant(world, ant_image)
         ant.location = Vector2(randint(0, w), randint(0, h))
         ant.brain.set_state("exploring")
