@@ -42,7 +42,7 @@ def draw_rect(lw, surface, rgb_color):
     return
 
 
-for x in xrange(diamond_color_size):
+for x in range(diamond_color_size):
     COLOR_DIAMOND[x].fill(COLOR[x])
     draw_rect(2, COLOR_DIAMOND[x], (128, 128, 128))
 
@@ -102,8 +102,8 @@ class World(object):
         return
 
     def init_diamonds(self):
-        for x in xrange(0, self.width):
-            for y in xrange(0, self.height):
+        for x in range(0, self.width):
+            for y in range(0, self.height):
                 self.diamonds[x, y] = None
         return
 
@@ -136,7 +136,7 @@ class World(object):
         return
 
     def check_game(self):
-        for x in xrange(0, self.width):
+        for x in range(0, self.width):
             if self.diamonds[x, 1] is not None:
                 self.game_over = True
                 return False
@@ -144,15 +144,15 @@ class World(object):
 
     def render_background(self, surface):
         surface.blit(self.background, (self.x, self.y))
-        for x in xrange(self.width):
-            for y in xrange(self.height):
+        for x in range(self.width):
+            for y in range(self.height):
                 surface.blit(self.no_diamond, (self.x + x * DIAMOND_SIZE[0], self.y + y * DIAMOND_SIZE[1]))
         return
 
     def render(self, surface):
         self.render_background(surface)
 
-        for diamond in self.diamonds.itervalues():
+        for diamond in self.diamonds.values():
             if diamond is not None:
                 diamond.render(surface)
 
@@ -191,7 +191,7 @@ class World(object):
         if self.moving_diamond is None:
             return
         index = self.moving_diamond.get_next_rotate()
-        for v in index.itervalues():
+        for v in index.values():
             if v[0] < 0 or v[0] >= self.width or v[1] >= self.height or self.diamonds[v] is not None:
                 return
         self.moving_diamond.rotate()
@@ -243,7 +243,7 @@ class World(object):
 
     def erase(self):
         n = 0
-        for line in xrange(0, self.height):
+        for line in range(0, self.height):
             if self.is_full(line):
                 self.clear_line(line)
                 n += 1
@@ -255,8 +255,8 @@ class World(object):
         return
 
     def drop_more_than_line(self, line):
-        for y in xrange(0, line):
-            for x in xrange(0, self.width):
+        for y in range(0, line):
+            for x in range(0, self.width):
                 yy = line - y
                 if self.diamonds[x, yy] is not None:
                     self.diamonds[x, yy].move_y(1)
@@ -265,13 +265,13 @@ class World(object):
         return
 
     def is_full(self, y):
-        for x in xrange(0, self.width):
+        for x in range(0, self.width):
             if self.diamonds[x, y] is None:
                 return False
         return True
 
     def clear_line(self, y):
-        for x in xrange(0, self.width):
+        for x in range(0, self.width):
             self.diamonds[x, y] = None
         return
 
@@ -376,8 +376,8 @@ class Diamond(object):
         return
 
     def init_diamonds(self):
-        for x in xrange(0, 4):
-            for y in xrange(0, 4):
+        for x in range(0, 4):
+            for y in range(0, 4):
                 self.diamonds[x, y] = None
         return
 
@@ -402,13 +402,13 @@ class Diamond(object):
         return
 
     def render(self, surface):
-        for diamond in self.diamonds.itervalues():
+        for diamond in self.diamonds.values():
             if diamond is not None:
                 diamond.render(surface)
         return
 
     def move_x(self, x):
-        for diamond in self.diamonds.itervalues():
+        for diamond in self.diamonds.values():
             if diamond is not None:
                 diamond.move_x(x)
         self.x += x
@@ -417,14 +417,14 @@ class Diamond(object):
     def move_to(self, pos):
         x = self.x - pos[0]
         y = self.y - pos[1]
-        for diamond in self.diamonds.itervalues():
+        for diamond in self.diamonds.values():
             if diamond is not None:
                 diamond.move_x(x)
                 diamond.move_x(x)
         return
 
     def move_y(self, y):
-        for diamond in self.diamonds.itervalues():
+        for diamond in self.diamonds.values():
             if diamond is not None:
                 diamond.move_y(y)
         self.y += y
@@ -432,24 +432,24 @@ class Diamond(object):
 
     def get_left(self):
         left = {}
-        for y in xrange(0, 4):
-            for x in xrange(0, 4):
+        for y in range(0, 4):
+            for x in range(0, 4):
                 if self.diamonds[3 - x, y] is not None:
                     left[y] = self.diamonds[3 - x, y].get_pos()
         return left
 
     def get_right(self):
         right = {}
-        for y in xrange(0, 4):
-            for x in xrange(0, 4):
+        for y in range(0, 4):
+            for x in range(0, 4):
                 if self.diamonds[x, y] is not None:
                     right[y] = self.diamonds[x, y].get_pos()
         return right
 
     def get_bottom(self):
         bottom = {}
-        for x in xrange(0, 4):
-            for y in xrange(0, 4):
+        for x in range(0, 4):
+            for y in range(0, 4):
                 if self.diamonds[x, y] is not None:
                     bottom[x] = self.diamonds[x, y].get_pos()
         return bottom
@@ -466,10 +466,10 @@ class Diamond(object):
     def rotate(self):
         self.rotate_time = (self.rotate_time + 1) % 4
         n = 0
-        for x in xrange(0, 4):
-            for y in xrange(0, 4):
+        for x in range(0, 4):
+            for y in range(0, 4):
                 self.diamonds[x, y] = None
-        for i in xrange(0, 4):
+        for i in range(0, 4):
             new_pos = diamond_rotate_point[self.type][self.rotate_time][i]
             new_pos_now = (new_pos[0] + self.x, new_pos[1] + self.y)
             self.diamonds_list[i].set_pos(new_pos_now)

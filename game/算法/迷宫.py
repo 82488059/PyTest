@@ -6,9 +6,9 @@ MAZE_MAX = 50
 
 # char map[MAZE_MAX+2][MAZE_MAX+2];
 map1 = {}
-for x in xrange(0, MAZE_MAX + 2):
+for x in range(0, MAZE_MAX + 2):
     map1[x] = {}
-    for y in xrange(0, MAZE_MAX + 2):
+    for y in range(0, MAZE_MAX + 2):
         map1[x][y] = 0
 
 # map[MAZE_MAX + 2][MAZE_MAX + 2]
@@ -31,11 +31,11 @@ def search(xx, yy):
         turn = 3
     # for(i=0,next=rand()%4;i<4;i++,next=(next+turn)%4)
     next_value = randint(0, 3)
-    for i in xrange(0, 4):
+    for i in range(0, 4):
         # if(map[zx+2*d[next][0]][zy+2*d[next][1]]==0)
-        print "next %d" % next_value, " zx", zx, " zy", zy
-        print zx + 2 * d[next_value][0]
-        print zy + 2 * d[next_value][1]
+        print( "next {} zx {} zy {} ".format(next_value, zx, zy))
+        print( zx + 2 * d[next_value][0])
+        print( zy + 2 * d[next_value][1])
         if map1[zx + 2 * d[next_value][0]][zy + 2 * d[next_value][1]] == 0:
             # map[zx+d[next][0]][zy+d[next][1]]=1,
             map1[zx + d[next_value][0]][zy + d[next_value][1]] = 1
@@ -53,11 +53,11 @@ def make_maze(xi, yi):
     # int z1,z2;
     # for(z1=0,z2=2*y+2;z1<=2*x+2;z1++)map[z1][0]=1,map[z1][z2]=1;
     z2 = 2 * yi + 2
-    for z1 in xrange(0, 2 * xi + 2 + 1):
+    for z1 in range(0, 2 * xi + 2 + 1):
         map1[z1][0] = 1
         map1[z1][z2] = 1
     # for(z1=0,z2=2*x+2;z1<=2*y+2;z1++)map[0][z1]=1,map[z2][z1]=1;
-    for z1 in xrange(0, 2 * yi + 2 + 1):
+    for z1 in range(0, 2 * yi + 2 + 1):
         map1[0][z1] = 1
         map1[z2][z1] = 1
     # map[1][2]=1;map[2*x+1][2*y]=1;  srand((unsigned)time(NULL));
@@ -79,17 +79,17 @@ def run():
     # Make_Maze(x,y);
     make_maze(x, y)
     # for(z2=1;z2<=y*2+1;z2++){
-    for z2 in xrange(1, y * 2 + 1 + 1):
+    for z2 in range(1, y * 2 + 1 + 1):
         # for(z1=1;z1<=x*2+1;z1++) fputs(map[z1][z2]?"　":"█",stdout);
         str = ""
-        for z1 in xrange(1, x * 2 + 1 + 1):
+        for z1 in range(1, x * 2 + 1 + 1):
             if map1[z1][z2] == 0:
-                str += "-" # print "█"
+                str += "-" # print("█")
             else:
-                str += " " # print " "
+                str += " " # print(" ")
         # if(z2<=y*2)putchar(10);
         if z2 <= y * 2:
-            print str + "\n"
+            print(str + "\n")
     # }
     # return 0;
     # }

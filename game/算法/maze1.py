@@ -3,7 +3,7 @@ from random import randint
 from time import *
 import pygame
 from pygame.locals import *
-
+# 迷宫生成动画
 
 MAZE_MAX = 50
 MOVE_RIGHT = (1, 0)
@@ -15,9 +15,9 @@ MOVE_DOWN = (0, 1)
 class App(object):
     def __init__(self):
         self.map1 = {}
-        for x in xrange(0, MAZE_MAX + 2):
+        for x in range(0, MAZE_MAX + 2):
             self.map1[x] = {}
-            for y in xrange(0, MAZE_MAX + 2):
+            for y in range(0, MAZE_MAX + 2):
                 self.map1[x][y] = 0
         pygame.init()
         screen_size = (640, 480)
@@ -35,7 +35,7 @@ class App(object):
 
     def search(self, xx, yy):
         self.render()
-        sleep(0.3)
+        sleep(0.05)
 
         d = {0: {0: 0, 1: 1}, 1: {0: 1, 1: 0}, 2: {0: 0, 1: -1}, 3: {0: -1, 1: 0}}
         zx = xx * 2
@@ -46,7 +46,7 @@ class App(object):
         else:
             turn = 3
         next_value = randint(0, 3)
-        for i in xrange(0, 4):
+        for i in range(0, 4):
             if self.map1[zx + 2 * d[next_value][0]][zy + 2 * d[next_value][1]] == 0:
                 self.map1[zx + d[next_value][0]][zy + d[next_value][1]] = 1
                 self.search(xx + d[next_value][0], yy + d[next_value][1])
@@ -55,10 +55,10 @@ class App(object):
 
     def make_maze(self, xi, yi):
         z2 = 2 * yi + 2
-        for z1 in xrange(0, 2 * xi + 2 + 1):
+        for z1 in range(0, 2 * xi + 2 + 1):
             self.map1[z1][0] = 1
             self.map1[z1][z2] = 1
-        for z1 in xrange(0, 2 * yi + 2 + 1):
+        for z1 in range(0, 2 * yi + 2 + 1):
             self.map1[0][z1] = 1
             self.map1[z2][z1] = 1
         self.map1[1][2] = 1
@@ -70,9 +70,9 @@ class App(object):
         self.x = 22
         self.y = 22
         self.make_maze(self.x, self.y)
-        # for z2 in xrange(1, y * 2 + 1 + 1):
+        # for z2 in range(1, y * 2 + 1 + 1):
         #     str1 = ""
-        #     for z1 in xrange(1, x * 2 + 1 + 1):
+        #     for z1 in range(1, x * 2 + 1 + 1):
         #         if map1[z1][z2] == 0:
         #             str1 += "-"  # print "█"
         #         else:
@@ -87,8 +87,8 @@ class App(object):
             self.render()
             # self.screen.blit(self.background, (0, 0))
 
-            # for z2 in xrange(1, self.y * 2 + 1 + 1):
-            #     for z1 in xrange(1, self.x * 2 + 1 + 1):
+            # for z2 in range(1, self.y * 2 + 1 + 1):
+            #     for z1 in range(1, self.x * 2 + 1 + 1):
             #         if self.map1[z1][z2] == 0:
             #             self.screen.blit(self.diamonds1, (z1*10, z2*10))
             #         else:
@@ -102,8 +102,8 @@ class App(object):
 
         self.screen.blit(self.background, (0, 0))
 
-        for z2 in xrange(1, self.y * 2 + 1 + 1):
-            for z1 in xrange(1, self.x * 2 + 1 + 1):
+        for z2 in range(1, self.y * 2 + 1 + 1):
+            for z1 in range(1, self.x * 2 + 1 + 1):
                 if self.map1[z1][z2] == 0:
                     self.screen.blit(self.diamonds1, (z1*10, z2*10))
                 else:

@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from random import randint
-
+# 走迷宫动画
 import pygame
 from pygame.locals import *
 
@@ -15,9 +15,9 @@ direction = {0: {0: 0, 1: 1}, 1: {0: 1, 1: 0}, 2: {0: 0, 1: -1}, 3: {0: -1, 1: 0
 class App(object):
     def __init__(self):
         self.map1 = {}
-        for x in xrange(0, MAZE_MAX + 2):
+        for x in range(0, MAZE_MAX + 2):
             self.map1[x] = {}
-            for y in xrange(0, MAZE_MAX + 2):
+            for y in range(0, MAZE_MAX + 2):
                 self.map1[x][y] = 0
         pygame.init()
         screen_size = (640, 480)
@@ -56,7 +56,7 @@ class App(object):
         else:
             turn = 3
         next_value = randint(0, 3)
-        for i in xrange(0, 4):
+        for i in range(0, 4):
             if self.map1[zx + 2 * d[next_value][0]][zy + 2 * d[next_value][1]] == 0:
                 self.map1[zx + d[next_value][0]][zy + d[next_value][1]] = 1
                 self.search(xx + d[next_value][0], yy + d[next_value][1])
@@ -65,10 +65,10 @@ class App(object):
 
     def make_maze(self, xi, yi):
         z2 = 2 * yi + 2
-        for z1 in xrange(0, 2 * xi + 2 + 1):
+        for z1 in range(0, 2 * xi + 2 + 1):
             self.map1[z1][0] = 1
             self.map1[z1][z2] = 1
-        for z1 in xrange(0, 2 * yi + 2 + 1):
+        for z1 in range(0, 2 * yi + 2 + 1):
             self.map1[0][z1] = 1
             self.map1[z2][z1] = 1
         self.map1[1][2] = 1
@@ -95,8 +95,8 @@ class App(object):
             self.render()
             # self.screen.blit(self.background, (0, 0))
 
-            # for z2 in xrange(1, self.y * 2 + 1 + 1):
-            #     for z1 in xrange(1, self.x * 2 + 1 + 1):
+            # for z2 in range(1, self.y * 2 + 1 + 1):
+            #     for z1 in range(1, self.x * 2 + 1 + 1):
             #         if self.map1[z1][z2] == 0:
             #             self.screen.blit(self.diamonds1, (z1*10, z2*10))
             #         else:
@@ -110,8 +110,8 @@ class App(object):
 
         self.screen.blit(self.background, (0, 0))
 
-        for z2 in xrange(1, self.y * 2 + 1 + 1):
-            for z1 in xrange(1, self.x * 2 + 1 + 1):
+        for z2 in range(1, self.y * 2 + 1 + 1):
+            for z1 in range(1, self.x * 2 + 1 + 1):
 
                 if self.map1[z1][z2] == 0:
                     self.screen.blit(self.diamonds1, (z1*10, z2*10))
@@ -136,13 +136,13 @@ class App(object):
         self.root[self.index] = (x, y)
         self.index += 1
 
-        for i in xrange(0, 4):
+        for i in range(0, 4):
             nx = x + direction[i][0]
             ny = y + direction[i][1]
             if 0 < nx <= self.x * 2 + 1 and 0 < ny <= self.y * 2 + 1:
                 if self.map1[nx][ny] == 1:
                     if nx == self.end[0] and ny == self.end[1]:
-                        print self.index
+                        print(self.index)
                         return 1
                     self.map1[nx][ny] = 2
                     if 0 == self.find(nx, ny):
