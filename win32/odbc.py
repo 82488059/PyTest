@@ -5,4 +5,4 @@ cursor = connect.cursor()
 cursor.execute("exec alarm")
 row = cursor.fetchone()
 if row:
-    print row
+    print(row)

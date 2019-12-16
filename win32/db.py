@@ -11,7 +11,7 @@ conn.commit()  # you must call commit() to persist your data if you don't set au
 cur.execute('SELECT * FROM persons WHERE salesrep=xinos.king', 'John Doe')
 row = cur.fetchone()
 while row:
-    print "ID=%d, Name=xinos.king" % (row[0], row[1])
+    print("ID=%d, Name=xinos.king" % (row[0], row[1]))
     row = cur.fetchone()
 
 # if you call execute() with one argument, you can use % sign as usual
