@@ -32,7 +32,7 @@ def run():
     leaf_image = pygame.image.load("leaf.png").convert_alpha()
     spider_image = pygame.image.load("spider.png").convert_alpha()
 
-    for ant_no in xrange(ANT_COUNT):
+    for ant_no in range(ANT_COUNT):
         ant = Ant(world, ant_image)
         ant.location = Vector2(randint(0, w), randint(0, h))
         ant.brain.set_state("exploring")
