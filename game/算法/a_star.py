@@ -28,9 +28,9 @@ class Node(object):
 class App(object):
     def __init__(self):
         self.map1 = {}
-        for x in xrange(0, MAZE_MAX + 2):
+        for x in range(0, MAZE_MAX + 2):
             self.map1[x] = {}
-            for y in xrange(0, MAZE_MAX + 2):
+            for y in range(0, MAZE_MAX + 2):
                 self.map1[x][y] = 0
         pygame.init()
         screen_size = (640, 480)
@@ -56,7 +56,7 @@ class App(object):
         d_index = randint(0, 3)
         length = randint(5, 20)
 
-        for i in xrange(0, length):
+        for i in range(0, length):
             nx = x + direction[d_index][0]*i
             ny = y + direction[d_index][1]*i
             if 0 < nx < self.x*2+2 and 0 < ny < self.y*2+2:
@@ -82,8 +82,8 @@ class App(object):
     def render(self):
         self.screen.blit(self.background, (0, 0))
 
-        for z2 in xrange(1, self.y * 2 + 1 + 1):
-            for z1 in xrange(1, self.x * 2 + 1 + 1):
+        for z2 in range(1, self.y * 2 + 1 + 1):
+            for z1 in range(1, self.x * 2 + 1 + 1):
                 if self.map1[z1][z2] == 0:
                     self.screen.blit(self.diamonds1, (z1*10, z2*10))
                 else:
