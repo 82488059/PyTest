@@ -15,7 +15,7 @@ task_completes_with_wrong = iamp.get_task_ids(7)
 mega_tasks = task_completes.copy()
 mega_tasks.update(task_completes_with_wrong)
 
-for tid,task in mega_tasks.items():
+for tid,task in list(mega_tasks.items()):
     if db.check_task_id(tid) :
      #  logging.info("TASK ID: %s , DO IT BEFORE." % tid)
         continue

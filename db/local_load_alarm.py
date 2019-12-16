@@ -3,7 +3,7 @@
 import pyodbc
 import time
 import datetime
-print datetime.datetime.now()
+print(datetime.datetime.now())
 
 d1 = datetime.datetime.now()
 # 服务器配置
@@ -16,13 +16,13 @@ while True:
     d2 = datetime.datetime.now()
     # 一小时重启一次
     if d2.hour - d1.hour > 0:
-        print datetime.datetime.now()
+        print(datetime.datetime.now())
         break
     
     cursor.execute("exec alarm")
     row = cursor.fetchone()
     # print row
-    print datetime.datetime.now()
+    print(datetime.datetime.now())
 
     time.sleep(1)
 

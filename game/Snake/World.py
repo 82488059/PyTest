@@ -1,5 +1,6 @@
 from GameSnake import *
 from random import randint
+import gameobjects
 from gameobjects.vector2 import Vector2
 
 
@@ -28,13 +29,13 @@ class World(object):
     def process(self, time_passed):
         time_passed_seconds = time_passed / 1000.0
         self.snake.process(time_passed_seconds)
-        for entity in self.entities.values():
+        for entity in list(self.entities.values()):
             entity.process(time_passed_seconds)
 
     def render(self, surface):
         surface.blit(self.background, (0, 0))
         self.snake.render(surface)
-        for entity in self.entities.itervalues():
+        for entity in self.entities.values():
             entity.render(surface)
 
     def add_food(self, node):
@@ -42,7 +43,7 @@ class World(object):
         return
 
     def take_food(self, pos):
-        for entity in self.entities.itervalues():
+        for entity in self.entities.values():
             if entity.near(pos):
                 self.remove_entity(entity)
                 self.product_food()
@@ -50,7 +51,7 @@ class World(object):
         return
 
     def no_food(self):
-        for _ in self.entities.itervalues():
+        for _ in self.entities.values():
             return False
         return True
 

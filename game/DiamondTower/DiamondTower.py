@@ -65,8 +65,8 @@ class App(object):
     def create_background(self):
         diamond = pygame.image.load("ground.png").convert()
         background = pygame.surface.Surface((self.width, self.height)).convert()
-        for vx in xrange(0, 16):
-            for vy in xrange(0, 12):
+        for vx in range(0, 16):
+            for vy in range(0, 12):
                 background.blit(diamond, (vx*40, vy*40))
 
         return background

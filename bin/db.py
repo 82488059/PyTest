@@ -4,8 +4,8 @@ import logging,sqlite3
 try:
     conn = sqlite3.connect('tasks.db')
     cur  = conn.cursor()
-except Exception,e :
-    print e
+except Exception as e :
+    print(e)
     exit(1)
 
 def init_db() :
@@ -36,7 +36,7 @@ def query(sql,values=None) :
         else :
             cur.execute(sql)
         conn.commit()
-    except Exception,e:
+    except Exception as e:
         logging.error(sql)
         logging.error(e)
         return False
@@ -55,7 +55,7 @@ def list_tasks() :
     sql = "select * from tasks"
     if query(sql) :
         for row in cur.fetchall():
-            print "%s  %s %s %s %d" %(row[0],row[1],row[2],row[3],row[5])
+            print("%s  %s %s %s %d" %(row[0],row[1],row[2],row[3],row[5]))
 
 def check_task_item_id(tid,num) :
     global conn,cur

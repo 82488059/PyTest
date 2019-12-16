@@ -28,7 +28,7 @@ def get_server_query(url) :
 #       duration = end_time - start_time
         c.close()
     except Exception as e:
-        print "ERROR %s" % e
+        print("ERROR %s" % e)
         return -1
 #   print temp.contents
 #    return xml.dom.minidom.parseString(temp.contents)
