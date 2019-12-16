@@ -20,7 +20,7 @@ class Snake(object):
         return
 
     def render(self, surface):
-        for node in self.nodes.values():
+        for node in list(self.nodes.values()):
             node.render(surface)
         return
 
@@ -61,7 +61,7 @@ class Snake(object):
         if self.node_id < 2:
             return
 
-        for i in xrange(1, self.node_id):
+        for i in range(1, self.node_id):
             t = self.node_id - i
             self.nodes[t].set_location(self.nodes[t-1].get_location())
         return

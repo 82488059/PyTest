@@ -142,7 +142,7 @@ class App(object):
             if 0 < nx <= self.x * 2 + 1 and 0 < ny <= self.y * 2 + 1:
                 if self.map1[nx][ny] == 1:
                     if nx == self.end[0] and ny == self.end[1]:
-                        print(self.index)
+                        print((self.index))
                         return 1
                     self.map1[nx][ny] = 2
                     if 0 == self.find(nx, ny):

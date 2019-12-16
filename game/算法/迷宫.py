@@ -33,9 +33,9 @@ def search(xx, yy):
     next_value = randint(0, 3)
     for i in range(0, 4):
         # if(map[zx+2*d[next][0]][zy+2*d[next][1]]==0)
-        print( "next {} zx {} zy {} ".format(next_value, zx, zy))
-        print( zx + 2 * d[next_value][0])
-        print( zy + 2 * d[next_value][1])
+        print(( "next {} zx {} zy {} ".format(next_value, zx, zy)))
+        print(( zx + 2 * d[next_value][0]))
+        print(( zy + 2 * d[next_value][1]))
         if map1[zx + 2 * d[next_value][0]][zy + 2 * d[next_value][1]] == 0:
             # map[zx+d[next][0]][zy+d[next][1]]=1,
             map1[zx + d[next_value][0]][zy + d[next_value][1]] = 1
@@ -89,7 +89,7 @@ def run():
                 str += " " # print(" ")
         # if(z2<=y*2)putchar(10);
         if z2 <= y * 2:
-            print(str + "\n")
+            print((str + "\n"))
     # }
     # return 0;
     # }
