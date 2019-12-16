@@ -13,7 +13,7 @@ while True:
 
     rand_col = (randint(0, 255), randint(0,255), randint(0,255))
     #screen.lock()
-    for _ in xrange(100):
+    for _ in range(100):
         rand_pos = (randint(0, 639), randint(0, 479))
         screen.set_at(rand_pos, rand_col)
     #screen.unlock()

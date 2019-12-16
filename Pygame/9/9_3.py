@@ -34,7 +34,7 @@ while True:
 
     # 参数前面加*意味着把列表或元组展开
     destination = Vector2(*pygame.mouse.get_pos()) - Vector2(*sprite.get_size()) / 2
-    print destination
+    print(destination)
     # 计算鱼儿当前位置到鼠标位置的向量
     vector_to_mouse = Vector2.from_points(position, destination)
     # 向量规格化

@@ -16,7 +16,7 @@ def run():
     screen = pygame.display.set_mode((640, 480))
     stars = []
 
-    for n in xrange(200):
+    for n in range(200):
         x = float(randint(0, 639))
         y = float(randint(0, 479))
         speed = float(randint(10, 300))
@@ -50,7 +50,7 @@ def run():
         def on_screen(star):
             return star.x > 0
 
-        stars = filter(on_screen, stars)
+        stars = list(filter(on_screen, stars))
         pygame.display.update()
 
 

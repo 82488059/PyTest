@@ -49,7 +49,7 @@ while True:
         else:
             a = 1
 
-    for v in xrange(479):
+    for v in range(479):
         if v < h:
             pygame.draw.rect(screen, (0,0,0), (0, v, 640, v+1))
             continue

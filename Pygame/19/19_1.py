@@ -29,13 +29,13 @@ def run():
     fov = 90.
     viewing_distance = calculate_viewing_distance(radians(fov), SCREEN_SIZE[0])
 
-    for x in xrange(0, CUBE_SIZE+1, 20):
+    for x in range(0, CUBE_SIZE+1, 20):
         edge_x = x == 0 or x == CUBE_SIZE
 
-        for y in xrange(0, CUBE_SIZE+1, 20):
+        for y in range(0, CUBE_SIZE+1, 20):
             edge_y = y == 0 or y == CUBE_SIZE
 
-            for z in xrange(0, CUBE_SIZE+1, 20):
+            for z in range(0, CUBE_SIZE+1, 20):
                 edge_z = z == 0 or z == CUBE_SIZE
                 if sum((edge_x, edge_y, edge_z)) >= 2:
                     point_x = float(x) - CUBE_SIZE/2
