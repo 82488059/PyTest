@@ -15,7 +15,7 @@ class SnakeWindow(wx.Window):
 
     def __init__(self, parent, size, offset):
         wx.Window.__init__(self, parent, -1, size=size)
-        print self.GetBorder(wx.BOTTOM)
+        print(self.GetBorder(wx.BOTTOM))
         self.area = (size[0] - offset, size[1] - offset)
         self.snakeColor = 'black'
         self.SetBackgroundColour('green')
@@ -134,14 +134,14 @@ class SnakeWindow(wx.Window):
             return False
 
     def GameOver(self, newhead):
-        print newhead
+        print(newhead)
         if newhead in self.snake or newhead in self.snakeDebris:
             self.runtime.Stop()
-            print 'autotomy'
+            print('autotomy')
             return True
         elif newhead[0] < 0 or newhead[0] > self.area[0] or newhead[1] < 0 or newhead[1] > self.area[1]:
             self.runtime.Stop()
-            print 'out'
+            print('out')
             return True
         else:
             return False
@@ -165,7 +165,7 @@ class SnakeWindow(wx.Window):
         pos = pos + (10, 10)
         dc.Clear()
         dc.DrawRectangle(*pos)
-        print 'drawpoint'
+        print('drawpoint')
 
 
 class SnakeFrame(wx.Frame):
