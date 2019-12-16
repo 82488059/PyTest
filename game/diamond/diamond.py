@@ -6,13 +6,13 @@ pygame.init()
 SCREEN_SIZE = (640, 480)
 main_screen = pygame.display.set_mode(SCREEN_SIZE, 0, 32)
 # key down
-ROTATE_LEFT, ROTATE_RIGHT, TO_BOTTOM = range(3)
+ROTATE_LEFT, ROTATE_RIGHT, TO_BOTTOM = list(range(3))
 # diamond size
 DIAMOND_SIZE = (20, 20)
 # color type
 diamond_color_size = 6
-COLOR_RED, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_BLACK, COLOR_NO_DIAMOND = range(
-    diamond_color_size)
+COLOR_RED, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_BLACK, COLOR_NO_DIAMOND = list(range(
+    diamond_color_size))
 COLOR = {
     COLOR_RED: (255, 0, 0),
     COLOR_BLUE: (0, 0, 255),
@@ -127,7 +127,7 @@ class World(object):
 
     def add_diamond_world(self, diamond):
         nodes = diamond.get_all_node()
-        for k in nodes.keys():
+        for k in list(nodes.keys()):
             if nodes[k] is not None:
                 self.diamonds[nodes[k].get_pos()] = nodes[k]
         self.moving_diamond = None
@@ -152,7 +152,7 @@ class World(object):
     def render(self, surface):
         self.render_background(surface)
 
-        for diamond in self.diamonds.values():
+        for diamond in list(self.diamonds.values()):
             if diamond is not None:
                 diamond.render(surface)
 
@@ -191,7 +191,7 @@ class World(object):
         if self.moving_diamond is None:
             return
         index = self.moving_diamond.get_next_rotate()
-        for v in index.values():
+        for v in list(index.values()):
             if v[0] < 0 or v[0] >= self.width or v[1] >= self.height or self.diamonds[v] is not None:
                 return
         self.moving_diamond.rotate()
@@ -402,13 +402,13 @@ class Diamond(object):
         return
 
     def render(self, surface):
-        for diamond in self.diamonds.values():
+        for diamond in list(self.diamonds.values()):
             if diamond is not None:
                 diamond.render(surface)
         return
 
     def move_x(self, x):
-        for diamond in self.diamonds.values():
+        for diamond in list(self.diamonds.values()):
             if diamond is not None:
                 diamond.move_x(x)
         self.x += x
@@ -417,14 +417,14 @@ class Diamond(object):
     def move_to(self, pos):
         x = self.x - pos[0]
         y = self.y - pos[1]
-        for diamond in self.diamonds.values():
+        for diamond in list(self.diamonds.values()):
             if diamond is not None:
                 diamond.move_x(x)
                 diamond.move_x(x)
         return
 
     def move_y(self, y):
-        for diamond in self.diamonds.values():
+        for diamond in list(self.diamonds.values()):
             if diamond is not None:
                 diamond.move_y(y)
         self.y += y
@@ -459,7 +459,7 @@ class Diamond(object):
 
     def get_next_rotate(self):
         c_index = diamond_rotate_point[self.type][(self.rotate_time + 1) % 4].copy()
-        for k in c_index.keys():
+        for k in list(c_index.keys()):
             c_index[k] = (self.x + c_index[k][0], self.y + c_index[k][1])
         return c_index
 
