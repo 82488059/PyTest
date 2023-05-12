@@ -1,102 +1,114 @@
-import random
 import pygame
+import random
 
-WIDTH = 40  # 迷宫宽度
-HEIGHT = 20  # 迷宫高度
-LAYERS = 5  # 迷宫层数
+# 定义游戏界面常量
+GRID_SIZE = 20
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 480
+NUM_COLS = WINDOW_WIDTH // GRID_SIZE
+NUM_ROWS = WINDOW_HEIGHT // GRID_SIZE
 
-# 初始化迷宫地图
-maze_map = [[[1 for _ in range(WIDTH)] for _ in range(HEIGHT)] for _ in range(LAYERS)]
+# 定义游戏状态变量和颜色
+GAME_OVER = False
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+SCORE = 0
 
+# 定义吃豆人的初始位置
+PLAYER_POSITION = [NUM_COLS//2, NUM_ROWS//2]
 
-def generate_maze(layer, x, y):
-    # 标记当前位置为已经访问过
-    maze_map[layer][x][y] = 0
-    
-    # 随机打乱四个方向的顺序
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-    random.shuffle(directions)
-    
-    # 挨个尝试四个方向
-    for dx, dy in directions:
-        nx, ny = x + dx, y + dy
-        if nx < 0 or nx >= WIDTH or ny < 0 or ny >= HEIGHT:
-            continue  # 越界了，不能走
-        if maze_map[layer][nx][ny] == 0:
-            continue  # 已经访问过了，不能走
+# 定义豆子的分数
+BEAN_SCORE = 10
 
-        # 打通两个格子之间的墙壁
-        if dx == 1:
-            maze_map[layer][x][y] &= 0b1110  # 当前格子右边的墙壁
-            maze_map[layer][nx][ny] &= 0b1101  # 新的格子左边的墙壁
-        elif dx == -1:
-            maze_map[layer][x][y] &= 0b1101  # 当前格子左边的墙壁
-            maze_map[layer][nx][ny] &= 0b1110  # 新的格子右边的墙壁
-        elif dy == 1:
-            maze_map[layer][x][y] &= 0b1011  # 当前格子下边的墙壁
-            maze_map[layer][nx][ny] &= 0b1110  # 新的格子上边的墙壁
-        elif dy == -1:
-            maze_map[layer][x][y] &= 0b1110  # 当前格子上边的墙壁
-            maze_map[layer][nx][ny] &= 0b1011  # 新的格子下边的墙壁
+# 定义障碍物列表和豆子列表
+OBSTACLES = [(2, 2), (5, 5), (8, 8)]
+BEANS = [(1, 1), (2, 3), (4, 4), (5, 7), (8, 6), (9, 3)]
 
-        generate_maze(layer, nx, ny)  # 递归访问新的格子
+# 初始化 Pygame
+pygame.init()
+window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("吃豆人游戏")
+clock = pygame.time.Clock()
 
+# 加载吃豆人和豆子的图像
+PLAYER_IMAGE = pygame.image.load("player.png")
+BEAN_IMAGE = pygame.image.load("bean.png")
 
-# 生成多层迷宫
-for layer in range(LAYERS):
-    # 随机选择一个起点
-    start_x, start_y = random.randint(0, WIDTH-1), random.randint(0, HEIGHT-1)
+def check_collision(player_position):
+    global GAME_OVER, SCORE
+    if player_position[0] < 0 or player_position[0] >= NUM_COLS:
+        GAME_OVER = True
+    elif player_position[1] < 0 or player_position[1] >= NUM_ROWS:
+        GAME_OVER = True
+    elif player_position in OBSTACLES:
+        GAME_OVER = True
+    elif player_position in BEANS:
+        SCORE += BEAN_SCORE
+        BEANS.remove(player_position)
+    if len(BEANS) == 0:
+        GAME_OVER = True
+    return GAME_OVER
 
-    # 生成迷宫
-    generate_maze(layer, start_x, start_y)
-
-
-# 初始化Pygame窗口
-BLOCK_SIZE = 20  # 方格尺寸
-WIN_WIDTH = WIDTH * BLOCK_SIZE
-WIN_HEIGHT = HEIGHT * BLOCK_SIZE
+def draw_grid(surface):
+    for x in range(0, WINDOW_WIDTH, GRID_SIZE):
+        pygame.draw.line(surface, WHITE, (x, 0), (x, WINDOW_HEIGHT))
+    for y in range(0, WINDOW_HEIGHT, GRID_SIZE):
+        pygame.draw.line(surface, WHITE, (0, y), (WINDOW_WIDTH, y))
 
 pygame.init()
-screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT * LAYERS))
 
-# 配置颜色和字体
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-FONT_SIZE = 36
-FONT = pygame.font.SysFont(None, FONT_SIZE)
+# 创建游戏窗口
+window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("吃豆人游戏")
 
-# 游戏循环
-running = True
-while running:
+# 设置游戏时钟
+clock = pygame.time.Clock()
+
+while not GAME_OVER:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            GAME_OVER = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                PLAYER_POSITION[1] -= 1
+            elif event.key == pygame.K_DOWN:
+                PLAYER_POSITION[1] += 1
+            elif event.key == pygame.K_LEFT:
+                PLAYER_POSITION[0] -= 1
+            elif event.key == pygame.K_RIGHT:
+                PLAYER_POSITION[0] += 1
+                
+    # 检查碰撞
+    if check_collision(PLAYER_POSITION):
+        GAME_OVER = True
+                
+    # 绘制游戏界面
+    window.fill(BLACK)
+    
+    # 绘制边界
+    pygame.draw.rect(window, WHITE, (0, 0, WINDOW_WIDTH, GRID_SIZE))
+    pygame.draw.rect(window, WHITE, (0, 0, GRID_SIZE, WINDOW_HEIGHT))
+    pygame.draw.rect(window, WHITE, (0, WINDOW_HEIGHT - GRID_SIZE, WINDOW_WIDTH, GRID_SIZE))
+    pygame.draw.rect(window, WHITE, (WINDOW_WIDTH - GRID_SIZE, 0, GRID_SIZE, WINDOW_HEIGHT))
+    
+    # 绘制障碍物和豆子
+    for obstacle in OBSTACLES:
+        pygame.draw.rect(window, WHITE, (obstacle[0]*GRID_SIZE, obstacle[1]*GRID_SIZE, GRID_SIZE, GRID_SIZE))
+    for bean in BEANS:
+        window.blit(BEAN_IMAGE, (bean[0]*GRID_SIZE, bean[1]*GRID_SIZE))
+       
+    # 绘制吃豆人
+    window.blit(PLAYER_IMAGE, (PLAYER_POSITION[0]*GRID_SIZE, PLAYER_POSITION[1]*GRID_SIZE))
+    
+    # 显示得分
+    score_text = pygame.font.SysFont(None, 36).render("得分: {}".format(SCORE), True, WHITE)
+    window.blit(score_text, (10, 10))
+    
+    # 更新屏幕
+    pygame.display.update()
+    
+    # 控制帧率
+    clock.tick(10)
 
-    # 清空屏幕
-    screen.fill(WHITE)
-
-    # 绘制迷宫
-    for layer in range(LAYERS):
-        for row in range(HEIGHT):
-            for col in range(WIDTH):
-                x = col * BLOCK_SIZE
-                y = row * BLOCK_SIZE + layer * WIN_HEIGHT
-                if maze_map[layer][col][row] & 0b1000:  # 上边的墙壁
-                    pygame.draw.line(screen, BLACK, (x, y), (x+BLOCK_SIZE, y), 2)
-                if maze_map[layer][col][row] & 0b0100:  # 下边的墙壁
-                    pygame.draw.line(screen, BLACK, (x, y+BLOCK_SIZE), (x+BLOCK_SIZE, y+BLOCK_SIZE), 2)
-                if maze_map[layer][col][row] & 0b0010:  # 右边的墙壁
-                    pygame.draw.line(screen, BLACK, (x+BLOCK_SIZE, y), (x+BLOCK_SIZE, y+BLOCK_SIZE), 2)
-                if maze_map[layer][col][row] & 0b0001:  # 左边的墙壁
-                    pygame.draw.line(screen, BLACK, (x, y), (x, y+BLOCK_SIZE), 2)
-
-    # 显示层数
-    for layer in range(LAYERS):
-        layer_text = FONT.render(f"Layer {layer+1}", True, BLACK)
-        screen.blit(layer_text, (10, layer*WIN_HEIGHT))
-
-    # 刷新界面
-    pygame.display.flip()
-
-# 退出程序
+# 游戏结束，退出 Pygame
 pygame.quit()
