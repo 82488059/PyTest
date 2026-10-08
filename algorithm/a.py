@@ -1,114 +1,147 @@
 import pygame
-import random
-
-# 定义游戏界面常量
-GRID_SIZE = 20
-WINDOW_WIDTH = 640
-WINDOW_HEIGHT = 480
-NUM_COLS = WINDOW_WIDTH // GRID_SIZE
-NUM_ROWS = WINDOW_HEIGHT // GRID_SIZE
-
-# 定义游戏状态变量和颜色
-GAME_OVER = False
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-SCORE = 0
-
-# 定义吃豆人的初始位置
-PLAYER_POSITION = [NUM_COLS//2, NUM_ROWS//2]
-
-# 定义豆子的分数
-BEAN_SCORE = 10
-
-# 定义障碍物列表和豆子列表
-OBSTACLES = [(2, 2), (5, 5), (8, 8)]
-BEANS = [(1, 1), (2, 3), (4, 4), (5, 7), (8, 6), (9, 3)]
-
-# 初始化 Pygame
-pygame.init()
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("吃豆人游戏")
-clock = pygame.time.Clock()
-
-# 加载吃豆人和豆子的图像
-PLAYER_IMAGE = pygame.image.load("player.png")
-BEAN_IMAGE = pygame.image.load("bean.png")
-
-def check_collision(player_position):
-    global GAME_OVER, SCORE
-    if player_position[0] < 0 or player_position[0] >= NUM_COLS:
-        GAME_OVER = True
-    elif player_position[1] < 0 or player_position[1] >= NUM_ROWS:
-        GAME_OVER = True
-    elif player_position in OBSTACLES:
-        GAME_OVER = True
-    elif player_position in BEANS:
-        SCORE += BEAN_SCORE
-        BEANS.remove(player_position)
-    if len(BEANS) == 0:
-        GAME_OVER = True
-    return GAME_OVER
-
-def draw_grid(surface):
-    for x in range(0, WINDOW_WIDTH, GRID_SIZE):
-        pygame.draw.line(surface, WHITE, (x, 0), (x, WINDOW_HEIGHT))
-    for y in range(0, WINDOW_HEIGHT, GRID_SIZE):
-        pygame.draw.line(surface, WHITE, (0, y), (WINDOW_WIDTH, y))
 
 pygame.init()
 
-# 创建游戏窗口
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("吃豆人游戏")
+# 窗口和游戏板块的大小
+size = width, height = 600, 600
+block_size = 50
 
-# 设置游戏时钟
-clock = pygame.time.Clock()
+screen = pygame.display.set_mode((800, 600))
+# 颜色
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+blue = (0, 0, 255)
+green = (0, 255, 0)
 
-while not GAME_OVER:
+# 游戏地图
+map = [
+    "wwwwwwwwww",
+    "wt       w",
+    "w   www  w",
+    "w   wbw  w",
+    "w   w    w",
+    "w   www  w",
+    "w        w",
+    "wwwwwwwwww",
+]
+
+# 将地图转化为二维数组
+game_map = []
+for row in map:
+    game_map.append(list(row))
+
+# 初始化玩家和目标盒子的位置
+player_pos = [1, 1]
+box_pos = [3, 3]
+target_pos = [3, 4]
+
+# 将二维数组中的'w'转化为绘制墙壁所需的坐标
+walls = []
+for i in range(len(game_map)):
+    for j in range(len(game_map[i])):
+        if game_map[i][j] == 'w':
+            walls.append(pygame.Rect(j * block_size, i * block_size, block_size, block_size))
+
+# 绘制游戏对象
+def draw():
+    # 绘制背景
+    screen.fill(white)
+    # 绘制墙壁
+    for wall in walls:
+        pygame.draw.rect(screen, black, wall, 0)
+    # 绘制目标盒子
+    pygame.draw.rect(screen, green, (target_pos[1] * block_size, target_pos[0] * block_size, block_size, block_size), 0)
+    # 绘制玩家
+    pygame.draw.rect(screen, blue, (player_pos[1] * block_size, player_pos[0] * block_size, block_size, block_size), 0)
+    # 绘制盒子
+    pygame.draw.rect(screen, red, (box_pos[1] * block_size, box_pos[0] * block_size, block_size, block_size), 0)
+    # 刷新屏幕
+    pygame.display.update()
+
+# 移动函数
+def move_up():
+    global player_pos, box_pos
+    if game_map[player_pos[0] - 1][player_pos[1]] == ' ':
+        player_pos[0] -= 1
+    elif game_map[player_pos[0] - 1][player_pos[1]] == 'b':
+        if game_map[box_pos[0] - 1][box_pos[1]] == ' ':
+            player_pos[0] -= 1
+            box_pos[0] -= 1
+        elif game_map[box_pos[0] - 1][box_pos[1]] == 't':
+            player_pos[0] -= 1
+            box_pos[0] -= 1
+            win()
+
+def move_down():
+    global player_pos, box_pos
+    if game_map[player_pos[0] + 1][player_pos[1]] == ' ':
+        player_pos[0] += 1
+    elif game_map[player_pos[0] + 1][player_pos[1]] == 'b':
+        if game_map[box_pos[0] + 1][box_pos[1]] == ' ':
+            player_pos[0] += 1
+            box_pos[0] += 1
+        elif game_map[box_pos[0] + 1][box_pos[1]] == 't':
+            player_pos[0] += 1
+            box_pos[0] += 1
+            win()
+
+def move_left():
+    global player_pos, box_pos
+    if game_map[player_pos[0]][player_pos[1] - 1] == ' ':
+        player_pos[1] -= 1
+    elif game_map[player_pos[0]][player_pos[1] - 1] == 'b':
+        if game_map[box_pos[0]][box_pos[1] - 1] == ' ':
+            player_pos[1] -= 1
+            box_pos[1] -= 1
+        elif game_map[box_pos[0]][box_pos[1] - 1] == 't':
+            player_pos[1] -= 1
+            box_pos[1] -= 1
+            win()
+
+def move_right():
+    global player_pos, box_pos
+    if game_map[player_pos[0]][player_pos[1] + 1] == ' ':
+        player_pos[1] += 1
+    elif game_map[player_pos[0]][player_pos[1] + 1] == 'b':
+        if game_map[box_pos[0]][box_pos[1] + 1] == ' ':
+            player_pos[1] += 1
+            box_pos[1] += 1
+        elif game_map[box_pos[0]][box_pos[1] + 1] == 't':
+            player_pos[1] += 1
+            box_pos[1] += 1
+            win()
+
+# 获胜函数
+def win():
+    # 当所有盒子都在目标位置上时，游戏获胜
+    for i in range(len(game_map)):
+        for j in range(len(game_map[i])):
+            if game_map[i][j] == 'b' and (i != target_pos[0] or j != target_pos[1]):
+                return False
+    print("You win!")
+    pygame.quit()
+
+# 创建窗口
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("Push Box")
+
+# 游戏循环
+while True:
+    # 处理游戏事件
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            GAME_OVER = True
-        elif event.type == pygame.KEYDOWN:
+            pygame.quit()
+            quit()
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                PLAYER_POSITION[1] -= 1
+                move_up()
             elif event.key == pygame.K_DOWN:
-                PLAYER_POSITION[1] += 1
+                move_down()
             elif event.key == pygame.K_LEFT:
-                PLAYER_POSITION[0] -= 1
+                move_left()
             elif event.key == pygame.K_RIGHT:
-                PLAYER_POSITION[0] += 1
-                
-    # 检查碰撞
-    if check_collision(PLAYER_POSITION):
-        GAME_OVER = True
-                
-    # 绘制游戏界面
-    window.fill(BLACK)
-    
-    # 绘制边界
-    pygame.draw.rect(window, WHITE, (0, 0, WINDOW_WIDTH, GRID_SIZE))
-    pygame.draw.rect(window, WHITE, (0, 0, GRID_SIZE, WINDOW_HEIGHT))
-    pygame.draw.rect(window, WHITE, (0, WINDOW_HEIGHT - GRID_SIZE, WINDOW_WIDTH, GRID_SIZE))
-    pygame.draw.rect(window, WHITE, (WINDOW_WIDTH - GRID_SIZE, 0, GRID_SIZE, WINDOW_HEIGHT))
-    
-    # 绘制障碍物和豆子
-    for obstacle in OBSTACLES:
-        pygame.draw.rect(window, WHITE, (obstacle[0]*GRID_SIZE, obstacle[1]*GRID_SIZE, GRID_SIZE, GRID_SIZE))
-    for bean in BEANS:
-        window.blit(BEAN_IMAGE, (bean[0]*GRID_SIZE, bean[1]*GRID_SIZE))
-       
-    # 绘制吃豆人
-    window.blit(PLAYER_IMAGE, (PLAYER_POSITION[0]*GRID_SIZE, PLAYER_POSITION[1]*GRID_SIZE))
-    
-    # 显示得分
-    score_text = pygame.font.SysFont(None, 36).render("得分: {}".format(SCORE), True, WHITE)
-    window.blit(score_text, (10, 10))
-    
-    # 更新屏幕
-    pygame.display.update()
-    
-    # 控制帧率
-    clock.tick(10)
+                move_right()
 
-# 游戏结束，退出 Pygame
-pygame.quit()
+    # 绘制游戏对象
+    draw()
