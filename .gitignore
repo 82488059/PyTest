@@ -91,3 +91,7 @@ ENV/
 /.vscode
 
 .gitee/
+
+# Local secrets / config (do not commit)
+**/conf.py
+
