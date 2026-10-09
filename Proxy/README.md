@@ -8,17 +8,13 @@
 
 
 #### 安装教程
-在Proxy目录下配置conf.py(与db_public.py同级)
-```py
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-db_charset = 'utf8'
-db_public = 'dbname'
-db_public_host = '127.0.0.1'
-db_public_user_name = 'root'
-db_public_user_pwd = 'pwd'
-db_port = 3306
+在 `Proxy/Proxy/` 目录下复制示例配置并填写真实值（勿提交 `conf.py`）：
+
+```bash
+cp conf.example.py conf.py
 ```
+
+所需字段见同目录 `conf.example.py`（占位符，无真实密钥）。
 
 #### 使用说明
 
