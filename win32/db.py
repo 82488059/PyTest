@@ -1,7 +1,33 @@
-#coding=utf8
+﻿#coding=utf8
 
+import os
 import pymssql
-conn = pymssql.connect(host='localhost', user='sa', password='REDACTED', database='weixin',charset="utf8")
+
+try:
+    import conf as _conf
+except ImportError:
+    _conf = None
+
+def _cfg(name, default=''):
+    if _conf is not None and hasattr(_conf, name):
+        val = getattr(_conf, name)
+        if val not in (None, ''):
+            return val
+    return os.environ.get(name, default)
+
+host = _cfg('DB_SERVER', 'localhost')
+user = _cfg('DB_USER')
+password = _cfg('DB_PASSWORD')
+database = _cfg('DB_DATABASE', 'weixin')
+
+if not all([user, password]):
+    raise SystemExit(
+        'Missing DB credentials. Set DB_USER/DB_PASSWORD '
+        '(and optional DB_SERVER/DB_DATABASE) in the environment or in conf.py '
+        '(see conf.py.example).'
+    )
+
+conn = pymssql.connect(host=host, user=user, password=REDACTED database=database, charset="utf8")
 cur = conn.cursor()
 cur.execute('CREATE TABLE persons(id INT, name VARCHAR(100))')
 cur.executemany("INSERT INTO persons VALUES(%d, xinos.king)", \

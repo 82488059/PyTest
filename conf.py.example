@@ -1,0 +1,8 @@
+﻿# Copy to conf.py (gitignored) and fill in, or set the same names as environment variables.
+# Do not commit conf.py or real credentials.
+
+DB_SERVER = '127.0.0.1'
+DB_USER = 'sa'
+DB_PASSWORD = ''
+DB_DATABASE = 'weixin'
+DB_DRIVER = '{SQL Server}'
